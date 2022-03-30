@@ -6,6 +6,7 @@ import Chart from "./Chart";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   max-width: 480px;
@@ -144,7 +145,7 @@ function Coin() {
   const chartMatch = useMatch("/:coinId/chart");
   const priceMatch = useMatch("/:coinId/price");
   const { isLoading: infoLoading, data: InfoData } = useQuery<InfoData>(["info", coinId], () => fetchCoinInfo(coinId!));
-  const { isLoading: tickersLoading, data: TickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId!));
+  const { isLoading: tickersLoading, data: TickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId!), { refetchInterval: 5000, });
 
   // const [loading, setLoading] = useState(true);
   // const [info, setInfo] = useState<InfoData>();
@@ -168,6 +169,9 @@ function Coin() {
   return (
     <Container>
       <Header>
+        <Helmet>
+          <title>{name?.name ? name.name : loading ? "loading..." : InfoData?.name}</title>
+        </Helmet>
         <Title>{name?.name ? name.name : loading ? "loading..." : InfoData?.name}</Title>
       </Header>
       {loading ?
@@ -180,11 +184,11 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>{InfoData?.symbol}</span>
+              <span>$ {InfoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{InfoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>$ {TickersData?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
           <Description>{InfoData?.description}</Description>
@@ -209,7 +213,7 @@ function Coin() {
           </Tabs>
 
           <Routes>
-            <Route path="chart" element={<Chart />} />
+            <Route path="chart" element={<Chart coinId={coinId!} />} />
             <Route path="price" element={<Price />} />
           </Routes>
         </>}
