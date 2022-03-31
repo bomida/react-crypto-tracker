@@ -1,7 +1,5 @@
-import { number } from "prop-types";
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
-import { Helmet } from "react-helmet-async";
 import ApexChart from "react-apexcharts";
 
 interface IHistorycal {
@@ -46,8 +44,3 @@ function Chart({ coinId }: ChartProps) {
 }
 
 export default Chart;
-
-// APEX CHARTS
-// 현대적이고 인터랙티브한 오픈 소스 차트
-// npm install --save react-apexcharts apexcharts
-// https://apexcharts.com

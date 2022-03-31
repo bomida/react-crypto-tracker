@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useLocation, useParams, Route, Routes, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import Price from "./Price";
@@ -146,24 +145,6 @@ function Coin() {
   const priceMatch = useMatch("/:coinId/price");
   const { isLoading: infoLoading, data: InfoData } = useQuery<InfoData>(["info", coinId], () => fetchCoinInfo(coinId!));
   const { isLoading: tickersLoading, data: TickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId!), { refetchInterval: 5000, });
-
-  // const [loading, setLoading] = useState(true);
-  // const [info, setInfo] = useState<InfoData>();
-  // const [priceInfo, setPriceInfo] = useState<PriceData>();
-  // useEffect(() => {
-  //   (async () => {
-  //     const infoData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-  //     ).json();
-  //     const priceData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-  //     ).json();
-  //     setInfo(infoData);
-  //     setPriceInfo(priceData);
-  //     setLoading(false);
-  //   })();
-  // }, [coinId]);
-
   const loading = infoLoading || tickersLoading;
 
   return (
@@ -222,7 +203,3 @@ function Coin() {
 }
 
 export default Coin;
-
-// react-router-dom v6 이상일 경우
-// const { coinId } = useParams(); 이렇게만 작성해도 된다.
-// useParams쓰는 순간 타입이 string or undefined로 됨.
