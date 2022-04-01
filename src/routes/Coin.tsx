@@ -137,7 +137,9 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps { }
+
+function Coin({ }: ICoinProps) {
   const { coinId } = useParams();
   const location = useLocation();
   const name = location.state as RouterState;
